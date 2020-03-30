@@ -1,6 +1,6 @@
 IDIR =../include
 CC=gcc
-CFLAGS=-I$(IDIR)
+CFLAGS=-I$(IDIRi) -Wall
 
 ODIR=obj
 LDIR =../lib
