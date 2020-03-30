@@ -4,9 +4,9 @@
 #include <string.h>
 #include <png.h>
 
-int writeBuffer(char *filename, int width, int height, const unsigned char *buffer, char *title);
+#include <png_utility.h>
 
-int main(int argc, char *argv[])
+int testMain(int argc, char *argv[])
 {
     if (argc != 2) {
         fprintf(stderr, "Please specify output file.\n");
@@ -27,7 +27,7 @@ int main(int argc, char *argv[])
         }
     }
 
-    int result = writeBuffer(argv[1], width, height, buffer, "hatfat test image");
+    int result = writeBufferToPNG(argv[1], width, height, buffer, "hatfat test image");
 
     if (result) {
         fprintf(stderr, "Error writing png file.\n");    
@@ -42,7 +42,7 @@ int main(int argc, char *argv[])
 /* 
  Expects a buffer with 3 bytes per pixel (RGB).
  */
-int writeBuffer(char *filename, int width, int height, const unsigned char *buffer, char *title) {
+int writeBufferToPNG(char *filename, int width, int height, const unsigned char *buffer, char *title) {
     int code = 0;
     FILE *fp = NULL;
     png_structp png_ptr = NULL;
@@ -90,8 +90,7 @@ int writeBuffer(char *filename, int width, int height, const unsigned char *buff
 
     png_write_info(png_ptr, info_ptr);
 
-    int x, y;
-    for (y = 0; y < height; y++) {
+    for (int y = 0; y < height; y++) {
         png_write_row(png_ptr, &buffer[y * width * 3]); 
     }
 

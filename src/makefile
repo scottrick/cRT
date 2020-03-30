@@ -1,23 +1,23 @@
 IDIR =../include
 CC=gcc
-CFLAGS=-I$(IDIRi) -Wall
+CFLAGS=-I$(IDIR) -Wall
 
 ODIR=obj
 LDIR =../lib
 
 LIBS=-lm -lpng
 
-_DEPS = 
+_DEPS = png_utility.h
 DEPS = $(patsubst %,$(IDIR)/%,$(_DEPS))
 
-_OBJ = pngtest.o  
+_OBJ = png_utility.o main.o
 OBJ = $(patsubst %,$(ODIR)/%,$(_OBJ))
 
 
 $(ODIR)/%.o: %.c $(DEPS)
 	$(CC) -c -o $@ $< $(CFLAGS)
 
-hellomake: $(OBJ)
+go: $(OBJ)
 	$(CC) -o $@ $^ $(CFLAGS) $(LIBS)
 
 .PHONY: clean
