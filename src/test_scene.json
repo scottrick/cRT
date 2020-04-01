@@ -1,0 +1,13 @@
+{
+    "output": {
+        "imageWidth": 800,
+        "imageHeight": 600
+    },
+    "camera": {
+        "position": {
+            "x": -10.0,
+            "y": 0.0,
+            "z": 0.0
+        }
+    }
+}
