@@ -5,6 +5,18 @@
 #include <scene.h>
 
 int main(int argc, char *argv[]) {
+    
+    char defaultFilename[] = "output.png";
+    char *filename = defaultFilename;
+
+    if (argc < 2) {
+        printf("No output file specified, defaulting to %s\n", filename);
+    } 
+    else {
+        filename = argv[1];
+    }
+   
+    printf("file: %s\n", filename);
 
     Scene scene = readScene("test_scene.json");
 
@@ -20,7 +32,7 @@ int main(int argc, char *argv[]) {
         }
     }
 
-    writeBufferToPNG(argv[1], scene.imageWidth, scene.imageHeight, buffer, "hatfat");
+    writeBufferToPNG(filename, scene.imageWidth, scene.imageHeight, buffer, "cRT generated image");
 
     return 0;
 }

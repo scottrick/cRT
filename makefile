@@ -1,9 +1,9 @@
-IDIR =../include
+IDIR=include
 CC=gcc
 CFLAGS=-I$(IDIR) -Wall
 
-ODIR=obj
-LDIR =../lib
+ODIR=src/obj
+LDIR=lib
 
 LIBS=-lm -lpng
 
@@ -13,7 +13,7 @@ DEPS = $(patsubst %,$(IDIR)/%,$(_DEPS))
 _OBJ = png_utility.o main.o cJSON.o scene.o
 OBJ = $(patsubst %,$(ODIR)/%,$(_OBJ))
 
-$(ODIR)/%.o: %.c $(DEPS)
+$(ODIR)/%.o: src/%.c $(DEPS)
 	$(CC) -c -o $@ $< $(CFLAGS)
 
 go: $(OBJ)
