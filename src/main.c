@@ -10,14 +10,12 @@ int main(int argc, char *argv[]) {
     char *filename = defaultFilename;
 
     if (argc < 2) {
-        printf("No output file specified, defaulting to %s\n", filename);
+        printf("No output file specified, defaulting to %s.\n", filename);
     } 
     else {
         filename = argv[1];
     }
    
-    printf("file: %s\n", filename);
-
     Scene scene = readScene("test_scene.json");
 
     printf("scene size: %d, %d\n", scene.imageWidth, scene.imageHeight);
@@ -27,6 +25,7 @@ int main(int argc, char *argv[]) {
 
     for (int x = 0; x < scene.imageWidth; x++) {
         for (int y = 0; y < scene.imageHeight; y++) {
+            //shoot rays here
             buffer[y * scene.imageWidth * 3 + x * 3 + 1] = x; 
             buffer[y * scene.imageWidth * 3 + x * 3 + 0] = y;
         }

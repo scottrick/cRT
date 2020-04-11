@@ -1,6 +1,3 @@
-typedef struct Scene {
-    int imageWidth;
-    int imageHeight;
-} Scene;
+#include <def.h>
 
 Scene readScene(const char *filename);

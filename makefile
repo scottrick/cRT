@@ -1,13 +1,13 @@
 IDIR=include
 CC=gcc
-CFLAGS=-I$(IDIR) -Wall
+CFLAGS=-I$(IDIR) -Wall -Wextra -Wshadow -Wdouble-promotion 
 
 ODIR=src/obj
 LDIR=lib
 
 LIBS=-lm -lpng
 
-_DEPS = png_utility.h cJSON.h scene.h
+_DEPS = png_utility.h cJSON.h scene.h def.h
 DEPS = $(patsubst %,$(IDIR)/%,$(_DEPS))
 
 _OBJ = png_utility.o main.o cJSON.o scene.o
