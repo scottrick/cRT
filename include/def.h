@@ -1,3 +1,7 @@
+#pragma once
+
+static const float PI = 3.141592654f;
+
 typedef struct Vector3 {
     float x;
     float y;
@@ -6,8 +10,8 @@ typedef struct Vector3 {
 
 typedef struct Camera {
     Vec3 origin;        //the position of the camera
-    Vec3 lookPoint;     //the position the camera is facing
-    float fov;          //field of view angle (degrees)
+    Vec3 lookDir;       //the direction the camera is looking 
+    float fov;          //the horizontal field of view (radians)
 } Camera;
 
 typedef struct Ray {

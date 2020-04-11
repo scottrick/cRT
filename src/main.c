@@ -3,6 +3,7 @@
 
 #include <png_utility.h>
 #include <scene.h>
+#include <vec3_util.h>
 
 int main(int argc, char *argv[]) {
     
@@ -15,7 +16,7 @@ int main(int argc, char *argv[]) {
     else {
         filename = argv[1];
     }
-   
+
     Scene scene = readScene("test_scene.json");
 
     printf("scene size: %d, %d\n", scene.imageWidth, scene.imageHeight);
