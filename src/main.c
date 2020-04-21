@@ -1,8 +1,10 @@
+#include <math.h>
 #include <stdio.h>
 #include <string.h>
 
 #include <png_utility.h>
 #include <scene.h>
+#include <ray_util.h>
 #include <vec3_util.h>
 
 int main(int argc, char *argv[]) {
@@ -24,11 +26,41 @@ int main(int argc, char *argv[]) {
     unsigned char buffer[scene.imageWidth * scene.imageHeight * 3];
     memset(buffer, 0, sizeof(buffer));
 
+    Ray rays[scene.imageWidth][scene.imageHeight];
+    float fov = scene.camera.fov;
+    float verticalFov = fov * scene.imageHeight / scene.imageWidth;
+
+    float xRadians;
+    float yRadians;
+    float dx;
+    float dy;
+
+    /* Create all our rays. */
     for (int x = 0; x < scene.imageWidth; x++) {
         for (int y = 0; y < scene.imageHeight; y++) {
-            //shoot rays here
-            buffer[y * scene.imageWidth * 3 + x * 3 + 1] = x; 
-            buffer[y * scene.imageWidth * 3 + x * 3 + 0] = y;
+            xRadians = (((x + 0.5f) / scene.imageWidth) - 0.5f) * fov;
+            yRadians = (((y + 0.5f) / scene.imageHeight) - 0.5f) * verticalFov;
+            dx = tan(xRadians);
+            dy = tan(yRadians);
+ 
+            rays[x][y].origin = scene.camera.origin;
+            rays[x][y].dir.x = dx;
+            rays[x][y].dir.y = dy;
+            rays[x][y].dir.z = 1.0f;
+            normalizeVec3(&(rays[x][y].dir));
+             
+            Intersection intersect = findIntersection(&rays[x][y], &scene.sphere);
+ 
+            if (intersect.sphere != 0) {
+                buffer[y * scene.imageWidth * 3 + x * 3 + 0] = 0;
+                buffer[y * scene.imageWidth * 3 + x * 3 + 1] = 0;
+                buffer[y * scene.imageWidth * 3 + x * 3 + 2] = 0xff;
+            } 
+            else {
+                buffer[y * scene.imageWidth * 3 + x * 3 + 0] = 0x11;
+                buffer[y * scene.imageWidth * 3 + x * 3 + 1] = 0x11;
+                buffer[y * scene.imageWidth * 3 + x * 3 + 2] = 0x11;
+            }
         }
     }
 

@@ -39,3 +39,9 @@ typedef struct Scene {
     Sphere sphere;
 } Scene;
 
+typedef struct Intersection {
+    float t1;
+    float t2;
+    Sphere *sphere;
+} Intersection;
+

@@ -1,3 +1,6 @@
+# ctags for source code completion
+tags
+
 # output executable
 go
 
