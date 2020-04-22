@@ -25,7 +25,7 @@ Scene readScene(const char *filename) {
         sphereColor
     };
 
-    Scene scene = { 320, 240, camera, sphere };
+    Scene scene = { 1280, 800, camera, sphere };
     
     cJSON *json = cJSON_Parse("{}");
     cJSON_Delete(json);

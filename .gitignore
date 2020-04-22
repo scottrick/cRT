@@ -50,6 +50,7 @@ go
 *.su
 *.idb
 *.pdb
+core
 
 # Kernel Module Compile Results
 *.mod*

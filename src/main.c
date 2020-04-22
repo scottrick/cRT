@@ -1,5 +1,7 @@
+#include <time.h>
 #include <math.h>
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 
 #include <png_utility.h>
@@ -21,12 +23,14 @@ int main(int argc, char *argv[]) {
 
     Scene scene = readScene("test_scene.json");
 
-    printf("scene size: %d, %d\n", scene.imageWidth, scene.imageHeight);
+    printf("Scene size is (%d, %d).\n", scene.imageWidth, scene.imageHeight);
+    clock_t time  = clock();
 
     unsigned char buffer[scene.imageWidth * scene.imageHeight * 3];
     memset(buffer, 0, sizeof(buffer));
 
-    Ray rays[scene.imageWidth][scene.imageHeight];
+    Ray *rays = malloc(scene.imageWidth * scene.imageHeight * sizeof(Ray));
+    
     float fov = scene.camera.fov;
     float verticalFov = fov * scene.imageHeight / scene.imageWidth;
 
@@ -34,6 +38,7 @@ int main(int argc, char *argv[]) {
     float yRadians;
     float dx;
     float dy;
+    int pos = 0;
 
     /* Create all our rays. */
     for (int x = 0; x < scene.imageWidth; x++) {
@@ -42,14 +47,15 @@ int main(int argc, char *argv[]) {
             yRadians = (((y + 0.5f) / scene.imageHeight) - 0.5f) * verticalFov;
             dx = tan(xRadians);
             dy = tan(yRadians);
+            pos = y * scene.imageWidth + x;
  
-            rays[x][y].origin = scene.camera.origin;
-            rays[x][y].dir.x = dx;
-            rays[x][y].dir.y = dy;
-            rays[x][y].dir.z = 1.0f;
-            normalizeVec3(&(rays[x][y].dir));
+            rays[pos].origin = scene.camera.origin;
+            rays[pos].dir.x = dx;
+            rays[pos].dir.y = dy;
+            rays[pos].dir.z = 1.0f;
+            normalizeVec3(&(rays[pos].dir));
              
-            Intersection intersect = findIntersection(&rays[x][y], &scene.sphere);
+            Intersection intersect = findIntersection(&rays[pos], &scene.sphere);
  
             if (intersect.sphere != 0) {
                 buffer[y * scene.imageWidth * 3 + x * 3 + 0] = 0;
@@ -65,6 +71,9 @@ int main(int argc, char *argv[]) {
     }
 
     writeBufferToPNG(filename, scene.imageWidth, scene.imageHeight, buffer, "cRT generated image");
+    
+    time = clock() - time; 
+    printf("Image creation took %f seconds.\n", ((double)time) / CLOCKS_PER_SEC);
 
     return 0;
 }
