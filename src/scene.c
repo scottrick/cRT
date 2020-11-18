@@ -16,16 +16,25 @@ Scene readScene(const char *filename) {
         cameraFov 
     };
     
-    Vec3 sphereCenter = { 1.0f, 0.0f, 10.0f };
-    float sphereRadius = 2.0f;
-    Color sphereColor = { 0.0f, 0.8f, 0.0f };
-    Sphere sphere = {
-        sphereCenter,
-        sphereRadius,
-        sphereColor
+    Vec3 sphereCenter1 = { 1.0f, 0.0f, 10.0f };
+    float sphereRadius1 = 2.0f;
+    Color sphereColor1 = { 0.0f, 0.5f, 0.0f };
+    Sphere sphere1 = {
+        sphereCenter1,
+        sphereRadius1,
+        sphereColor1
     };
 
-    Scene scene = { 1280, 800, camera, sphere };
+    Vec3 sphereCenter2 = { -4.0f, 3.0f, 14.0f };
+    float sphereRadius2 = 7.0f;
+    Color sphereColor2 = { 0.8f, 0.0f, 0.8f };
+    Sphere sphere2 = {
+        sphereCenter2,
+        sphereRadius2,
+        sphereColor2
+    };
+    
+    Scene scene = { 1280, 800, camera, sphere1, sphere2 };
     
     cJSON *json = cJSON_Parse("{}");
     cJSON_Delete(json);

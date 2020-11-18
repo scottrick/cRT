@@ -4,6 +4,7 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include <color.h>
 #include <png_utility.h>
 #include <scene.h>
 #include <ray_util.h>
@@ -44,7 +45,7 @@ int main(int argc, char *argv[]) {
     for (int x = 0; x < scene.imageWidth; x++) {
         for (int y = 0; y < scene.imageHeight; y++) {
             xRadians = (((x + 0.5f) / scene.imageWidth) - 0.5f) * fov;
-            yRadians = (((y + 0.5f) / scene.imageHeight) - 0.5f) * verticalFov;
+            yRadians = -(((y + 0.5f) / scene.imageHeight) - 0.5f) * verticalFov;
             dx = tan(xRadians);
             dy = tan(yRadians);
             pos = y * scene.imageWidth + x;
@@ -55,12 +56,33 @@ int main(int argc, char *argv[]) {
             rays[pos].dir.z = 1.0f;
             normalizeVec3(&(rays[pos].dir));
              
-            Intersection intersect = findIntersection(&rays[pos], &scene.sphere);
+            Intersection intersect1 = findIntersection(&rays[pos], &scene.sphere1);
+            Intersection intersect2 = findIntersection(&rays[pos], &scene.sphere2);
  
-            if (intersect.sphere != 0) {
-                buffer[y * scene.imageWidth * 3 + x * 3 + 0] = 0;
-                buffer[y * scene.imageWidth * 3 + x * 3 + 1] = 0;
-                buffer[y * scene.imageWidth * 3 + x * 3 + 2] = 0xff;
+            Intersection *pClosestIntersection = 0;
+            if (intersect1.sphere != 0 && intersect2.sphere == 0) {
+                pClosestIntersection = &intersect1;
+            }
+            else if (intersect2.sphere != 0 && intersect1.sphere == 0) {
+                pClosestIntersection = &intersect2;
+            }
+            else if (intersect1.sphere != 0 && intersect2.sphere != 0) {
+                /* both intersected */
+                if (intersect1.time < intersect2.time) {
+                    pClosestIntersection = &intersect1;
+                }
+                else {
+                    pClosestIntersection = &intersect2;
+                }
+            }
+
+            if (pClosestIntersection != 0) {
+                buffer[y * scene.imageWidth * 3 + x * 3 + 0] =
+                    colorToChar(pClosestIntersection->sphere->color.r); 
+                buffer[y * scene.imageWidth * 3 + x * 3 + 1] =
+                    colorToChar(pClosestIntersection->sphere->color.g);
+                buffer[y * scene.imageWidth * 3 + x * 3 + 2] = 
+                    colorToChar(pClosestIntersection->sphere->color.b);
             } 
             else {
                 buffer[y * scene.imageWidth * 3 + x * 3 + 0] = 0x11;
@@ -77,3 +99,4 @@ int main(int argc, char *argv[]) {
 
     return 0;
 }
+

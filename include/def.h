@@ -1,5 +1,7 @@
 #pragma once
 
+#include <color.h>
+
 static const float PI = 3.141592654f;
 
 typedef struct Vector3 {
@@ -19,12 +21,6 @@ typedef struct Ray {
     Vec3 dir;           //direction the ray is traveling
 } Ray;
 
-typedef struct Color {
-    float r;
-    float g;
-    float b;
-} Color;
-
 typedef struct Sphere {
     Vec3 center;        //center of the sphere
     float radius;
@@ -36,12 +32,12 @@ typedef struct Scene {
     int imageHeight;
 
     Camera camera;
-    Sphere sphere;
+    Sphere sphere1;
+    Sphere sphere2;
 } Scene;
 
 typedef struct Intersection {
-    float t1;
-    float t2;
+    float time;
     Sphere *sphere;
 } Intersection;
 
